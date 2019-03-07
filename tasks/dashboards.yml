@@ -1,4 +1,15 @@
 ---
+- name: Empty local grafana dashboard directory
+  become: false
+  file:
+    path: /tmp/dashboards
+    state: absent
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  changed_when: false
+  when: grafana_use_provisioning and grafana_provisioning_synced
+
 - name: Create local grafana dashboard directories
   become: false
   file:
@@ -7,12 +18,31 @@
     mode: 0755
   delegate_to: localhost
   run_once: true
+  check_mode: false
+  changed_when: false
 
-- name: download grafana dashboard to local folder
+# - name: download grafana dashboard from grafana.net to local folder
+#   become: false
+#   get_url:
+#     url: "https://grafana.com/api/dashboards/{{ item.dashboard_id }}/revisions/{{ item.revision_id }}/download"
+#     dest: "/tmp/dashboards/{{ item.dashboard_id }}.json"
+#   register: _download_dashboards
+#   until: _download_dashboards is succeeded
+#   retries: 5
+#   delay: 2
+#   delegate_to: localhost
+#   run_once: true
+#   changed_when: false
+#   with_items: "{{ grafana_dashboards }}"
+#   when: grafana_dashboards | length > 0
+
+# Use curl to solve issue #77
+- name: download grafana dashboard from grafana.net to local directory
   become: false
-  get_url:
-    url: "https://grafana.com/api/dashboards/{{ item.dashboard_id }}/revisions/{{ item.revision_id }}/download"
-    dest: "/tmp/dashboards/{{ item.dashboard_id }}.json"
+  command: "curl --fail --compressed https://grafana.com/api/dashboards/{{ item.dashboard_id }}/revisions/{{ item.revision_id }}/download -o /tmp/dashboards/{{ item.dashboard_id }}.json"  # noqa 204
+  args:
+    creates: "/tmp/dashboards/{{ item.dashboard_id }}.json"
+    warn: false
   register: _download_dashboards
   until: _download_dashboards is succeeded
   retries: 5
@@ -20,6 +50,10 @@
   delegate_to: localhost
   run_once: true
   with_items: "{{ grafana_dashboards }}"
+  when: grafana_dashboards | length > 0
+  tags:
+    - skip_ansible_lint
+  check_mode: false
 
 # As noted in [1] an exported dashboard replaces the exporter's datasource
 # name with a representative name, something like 'DS_GRAPHITE'. The name
@@ -61,9 +95,22 @@
     replace: '"{{ item.datasource }}"'
   delegate_to: localhost
   run_once: true
+  changed_when: false
   with_items: "{{ grafana_dashboards }}"
+  when: grafana_dashboards | length > 0
 
-- name: import grafana dashboards
+- name: copy local grafana dashboards
+  become: false
+  copy:
+    src: "{{ item }}"
+    dest: "/tmp/dashboards/{{ item | basename }}"
+  with_fileglob:
+    - "{{ grafana_dashboards_dir }}/*.json"
+  delegate_to: localhost
+  run_once: true
+  changed_when: false
+
+- name: import grafana dashboards through API
   uri:
     url: "{{ grafana_api_url }}/api/dashboards/db"
     user: "{{ grafana_security.admin_user }}"
@@ -71,7 +118,56 @@
     force_basic_auth: true
     method: POST
     body_format: json
-    body: '{ "dashboard": {{ lookup("file", item) }}, "overwrite": true }'
+    body: '{ "dashboard": {{ lookup("file", item) }}, "overwrite": true, "message": "Updated by ansible" }'
   no_log: true
   with_fileglob:
-    - /tmp/dashboards/*
+    - "/tmp/dashboards/*"
+  when: not grafana_use_provisioning
+
+# TODO: uncomment this when ansible 2.7 will be min supported version
+# - name: import grafana dashboards
+#   grafana_dashboard:
+#     grafana_url: "{{ grafana_api_url }}"
+#     grafana_user: "{{ grafana_security.admin_user }}"
+#     grafana_password: "{{ grafana_security.admin_password }}"
+#     path: "/tmp/dashboards/{{ item }}"
+#     message: Updated by ansible
+#     state: present
+#     overwrite: true
+#   no_log: true
+#   with_fileglob:
+#     - "/tmp/dashboards/*"
+
+- name: Create/Update dashboards file (provisioning)
+  become: true
+  copy:
+    dest: "/etc/grafana/provisioning/dashboards/ansible.yml"
+    content: |
+      apiVersion: 1
+      providers:
+       - name: 'default'
+         orgId: 1
+         folder: ''
+         type: file
+         options:
+           path: /var/lib/grafana/dashboards
+    backup: false
+    owner: root
+    group: grafana
+    mode: 0640
+  notify: restart grafana
+  when: grafana_use_provisioning
+
+- name: Import grafana dashboards through provisioning
+  become: true
+  synchronize:
+    src: "/tmp/dashboards/"
+    dest: "/var/lib/grafana/dashboards"
+    archive: false
+    checksum: true
+    recursive: true
+    delete: "{{ grafana_provisioning_synced }}"
+    rsync_opts:
+      - "--no-motd"
+  when: grafana_use_provisioning
+  notify: "provisioned dashboards changed"

@@ -2,9 +2,103 @@
 
 ## [**Next release**](https://galaxy.ansible.com/cloudalchemy/grafana)
 
+**Fixed bugs:**
+
+- WTF bug with grafana\_dashboards\_dir == dashboards [\#136](https://github.com/cloudalchemy/ansible-grafana/issues/136)
+
+**Closed issues:**
+
+- 500 internal server error with packagecloud.io [\#133](https://github.com/cloudalchemy/ansible-grafana/issues/133)
+
+**Merged pull requests:**
+
+- Add option to disable alert execution [\#139](https://github.com/cloudalchemy/ansible-grafana/pull/139) ([Duologic](https://github.com/Duologic))
+- Remove files/dashboards directory [\#137](https://github.com/cloudalchemy/ansible-grafana/pull/137) ([amarao](https://github.com/amarao))
+- Become root to import dashboards [\#129](https://github.com/cloudalchemy/ansible-grafana/pull/129) ([nikosmeds](https://github.com/nikosmeds))
+
+## [0.13.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2019-01-08)
+**Closed issues:**
+
+- Problem installing on debian. Problems with repo and it's gpg key. [\#124](https://github.com/cloudalchemy/ansible-grafana/issues/124)
+
+**Merged pull requests:**
+
+- Replaced packagecloud repo with official Grafana repo [\#125](https://github.com/cloudalchemy/ansible-grafana/pull/125) ([wiktor2200](https://github.com/wiktor2200))
+- Fixed quotation marks to backtick in README.md [\#123](https://github.com/cloudalchemy/ansible-grafana/pull/123) ([wvh-github](https://github.com/wvh-github))
+- Enable the use of ports below 1024 [\#122](https://github.com/cloudalchemy/ansible-grafana/pull/122) ([wvh-github](https://github.com/wvh-github))
+- Feature provisioning dashboards [\#121](https://github.com/cloudalchemy/ansible-grafana/pull/121) ([mxbossard](https://github.com/mxbossard))
+- dashboard check should run on localhost [\#119](https://github.com/cloudalchemy/ansible-grafana/pull/119) ([wvh-github](https://github.com/wvh-github))
+- Add support for multi-line ansible\_managed strings [\#116](https://github.com/cloudalchemy/ansible-grafana/pull/116) ([etcet](https://github.com/etcet))
+- Fix \(\#99\) : allow custom yum repo template [\#105](https://github.com/cloudalchemy/ansible-grafana/pull/105) ([rockandska](https://github.com/rockandska))
+
+## [0.12.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-12-04)
+**Fixed bugs:**
+
+- Preflight "tags: always" conflicts with --tags option [\#101](https://github.com/cloudalchemy/ansible-grafana/issues/101)
+
+**Closed issues:**
+
+- Dashboard title cannot be empty [\#108](https://github.com/cloudalchemy/ansible-grafana/issues/108)
+- grafana\_admin ldap config template not handling boolean correctly [\#103](https://github.com/cloudalchemy/ansible-grafana/issues/103)
+
+**Merged pull requests:**
+
+- Allow disabling of Grafana alerts [\#115](https://github.com/cloudalchemy/ansible-grafana/pull/115) ([dominik-bln](https://github.com/dominik-bln))
+- Only set alerting if variable is false [\#112](https://github.com/cloudalchemy/ansible-grafana/pull/112) ([wvh-github](https://github.com/wvh-github))
+- Few smaller improvements, backward compatible [\#110](https://github.com/cloudalchemy/ansible-grafana/pull/110) ([krzyzakp](https://github.com/krzyzakp))
+- Replaced tag always, which colidate when including role.  [\#109](https://github.com/cloudalchemy/ansible-grafana/pull/109) ([krzyzakp](https://github.com/krzyzakp))
+- Fix: make curl fail when we encounter a 404 [\#107](https://github.com/cloudalchemy/ansible-grafana/pull/107) ([till](https://github.com/till))
+
+## [0.11.4](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-10-11)
+**Merged pull requests:**
+
+- fixes for handling LDAP template booleans in grafana groups section \(issue \#103\) [\#104](https://github.com/cloudalchemy/ansible-grafana/pull/104) ([madeinoz67](https://github.com/madeinoz67))
+
+## [0.11.3](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-10-07)
+**Fixed bugs:**
+
+- wrong file perm for datasources/ansible.yml [\#94](https://github.com/cloudalchemy/ansible-grafana/issues/94)
+
+**Closed issues:**
+
+- Enable jsonData in grafana\_datasources [\#100](https://github.com/cloudalchemy/ansible-grafana/issues/100)
+
+**Merged pull requests:**
+
+- move to ansible 2.7 [\#102](https://github.com/cloudalchemy/ansible-grafana/pull/102) ([paulfantom](https://github.com/paulfantom))
+- use `become` where needed [\#98](https://github.com/cloudalchemy/ansible-grafana/pull/98) ([paulfantom](https://github.com/paulfantom))
+
+## [0.11.2](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-09-12)
+**Fixed bugs:**
+
+- import grafana dashboards failed [\#77](https://github.com/cloudalchemy/ansible-grafana/issues/77)
+
+**Merged pull requests:**
+
+- Add become:yes to allow this module to be used in include\_role task [\#97](https://github.com/cloudalchemy/ansible-grafana/pull/97) ([jdbaldry](https://github.com/jdbaldry))
+- Add vars file for openSUSE 42.x [\#96](https://github.com/cloudalchemy/ansible-grafana/pull/96) ([kaiokassiano](https://github.com/kaiokassiano))
+- fixing issue \#94 [\#95](https://github.com/cloudalchemy/ansible-grafana/pull/95) ([nicosto](https://github.com/nicosto))
+
+## [0.11.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-08-24)
+**Closed issues:**
+
+- Config for Elasticsearch datasource [\#89](https://github.com/cloudalchemy/ansible-grafana/issues/89)
+- Pass variables through playbook [\#88](https://github.com/cloudalchemy/ansible-grafana/issues/88)
+- Issue with grafana restart when including one or more datasources [\#85](https://github.com/cloudalchemy/ansible-grafana/issues/85)
+
+**Merged pull requests:**
+
+- Fixed syntax in default/main.yml to avoid unmarshal errors [\#93](https://github.com/cloudalchemy/ansible-grafana/pull/93) ([Dreeg](https://github.com/Dreeg))
+- Use curl instead of get\_url to download dashboards [\#92](https://github.com/cloudalchemy/ansible-grafana/pull/92) ([paulfantom](https://github.com/paulfantom))
+- cheat ansible idempotency when downloading dashboards [\#87](https://github.com/cloudalchemy/ansible-grafana/pull/87) ([paulfantom](https://github.com/paulfantom))
+- Adding possibility to get right ownership on configuration files [\#86](https://github.com/cloudalchemy/ansible-grafana/pull/86) ([zonArt](https://github.com/zonArt))
+
+## [0.11.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-08-10)
 **Implemented enhancements:**
 
 - Issues provisioning datasources on Grafana in private subnet [\#70](https://github.com/cloudalchemy/ansible-grafana/issues/70)
+- Provision dashboards from file in addition to Grafana Dashboards [\#54](https://github.com/cloudalchemy/ansible-grafana/issues/54)
+- Provisioning folders [\#30](https://github.com/cloudalchemy/ansible-grafana/issues/30)
 
 **Fixed bugs:**
 
@@ -12,12 +106,19 @@
 
 **Closed issues:**
 
+- Use official repository for ARM builds [\#82](https://github.com/cloudalchemy/ansible-grafana/issues/82)
+- Datasource provision does not specify the apiVersion [\#73](https://github.com/cloudalchemy/ansible-grafana/issues/73)
 - adding datasource fails  [\#72](https://github.com/cloudalchemy/ansible-grafana/issues/72)
 - preflight checks [\#8](https://github.com/cloudalchemy/ansible-grafana/issues/8)
 
 **Merged pull requests:**
 
+- repeat plugin installation on network failure [\#84](https://github.com/cloudalchemy/ansible-grafana/pull/84) ([paulfantom](https://github.com/paulfantom))
+- simplify installation and use official ARM builds [\#83](https://github.com/cloudalchemy/ansible-grafana/pull/83) ([paulfantom](https://github.com/paulfantom))
+- use grafana\_datasource [\#81](https://github.com/cloudalchemy/ansible-grafana/pull/81) ([paulfantom](https://github.com/paulfantom))
+- allow importing local dashboards [\#80](https://github.com/cloudalchemy/ansible-grafana/pull/80) ([paulfantom](https://github.com/paulfantom))
 - Drop ansible 2.4 support [\#78](https://github.com/cloudalchemy/ansible-grafana/pull/78) ([paulfantom](https://github.com/paulfantom))
+- datasource format fix [\#76](https://github.com/cloudalchemy/ansible-grafana/pull/76) ([XooR](https://github.com/XooR))
 - Add separate grafana\_api\_url variable [\#71](https://github.com/cloudalchemy/ansible-grafana/pull/71) ([thejchap](https://github.com/thejchap))
 
 ## [0.10.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2018-07-07)
@@ -257,13 +358,13 @@
 - Old [\#1](https://github.com/cloudalchemy/ansible-grafana/pull/1) ([paulfantom](https://github.com/paulfantom))
 
 ## [0.4.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-10-16)
-## [0.3.2](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-27)
 ## [0.3.3](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-27)
+## [0.3.2](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-27)
 ## [0.3.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-27)
 ## [0.3.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-21)
-## [0.2.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-13)
-## [0.2.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-13)
 ## [0.1.3](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-13)
+## [0.2.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-13)
+## [0.2.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-07-13)
 ## [0.1.2](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-06-14)
 ## [0.1.1](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-06-14)
 ## [0.1.0](https://galaxy.ansible.com/cloudalchemy/grafana) (2017-06-05)
